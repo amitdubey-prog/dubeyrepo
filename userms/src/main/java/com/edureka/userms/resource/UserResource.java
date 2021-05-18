@@ -1,6 +1,7 @@
 package com.edureka.userms.resource;
 
 import com.edureka.userms.model.User;
+import com.edureka.userms.service.OrderService;
 import com.edureka.userms.service.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

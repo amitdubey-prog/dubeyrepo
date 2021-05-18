@@ -11,16 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
-    private final RestTemplate restTemplate;
+    private final OrderService orderService;
 
-    public UserServiceImpl(UserRepository userRepository, @Qualifier("myRestTemplate") RestTemplate restTemplate) {
+    public UserServiceImpl(UserRepository userRepository, OrderService orderService) {
         this.userRepository = userRepository;
-        this.restTemplate = restTemplate;
+        this.orderService = orderService;
     }
 
     @Override
@@ -66,17 +67,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @HystrixCommand(fallbackMethod = "getAllOrdersFromFallBack")
     public OrderTO[] getAllOrders() {
-        return restTemplate.getForObject("http://orderms/orders", OrderTO[].class);
+        System.out.println("$$$$$$$$$$$$$");
+        System.out.println("UserResource");
+        OrderTO[] allOrders = orderService.getAllOrders(); // servce-1
+        System.out.println(allOrders.length);
+        OrderTO[] catalogues = orderService.getCatalogues(); // service-2
+        System.out.println(catalogues.length);
+        OrderTO[] combinedOrders = Stream.of(allOrders, catalogues)
+                .flatMap(Stream::of)
+                .toArray(OrderTO[]::new);
+        return combinedOrders;
     }
 
-    public OrderTO[] getAllOrdersFromFallBack() {
-        // cache
-        OrderTO[] orderTOArray = new OrderTO[2];
-        orderTOArray[0] = new OrderTO(88L, "Eighty-eight");
-        orderTOArray[1] = new OrderTO(99L, "Ninety-Nine");
-
-        return orderTOArray;
-    }
 }

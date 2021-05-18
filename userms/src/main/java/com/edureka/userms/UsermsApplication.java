@@ -14,6 +14,11 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;*/
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,16 +32,16 @@ import java.util.List;
 @RefreshScope
 @RestController
 @EnableHystrix
-//@EnableOAuth2Client
-//@EnableResourceServer
-public class UsermsApplication /*extends ResourceServerConfigurerAdapter*/ {
+@EnableOAuth2Client
+@EnableResourceServer
+public class UsermsApplication extends ResourceServerConfigurerAdapter {
 
-	/*@Autowired
+	@Autowired
 	@Qualifier("oauth2RestTemplate")
 	@LoadBalanced
-	private OAuth2RestTemplate myOauth2RestTemplate;*/
+	private OAuth2RestTemplate myOauth2RestTemplate;
 
-	/*@GetMapping("/hello")
+	@GetMapping("/hello")
 	public String callPaymentms() {
 		System.out.println("***********************");
 		System.out.println("***********************");
@@ -76,7 +81,7 @@ public class UsermsApplication /*extends ResourceServerConfigurerAdapter*/ {
 				.and()
 				.authorizeRequests()
 				.anyRequest().permitAll();
-	}*/
+	}
 
 
 	public static void main(String[] args) {

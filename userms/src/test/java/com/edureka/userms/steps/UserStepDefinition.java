@@ -57,7 +57,6 @@ public class UserStepDefinition {
         resultActions = mockMvc.perform(requestBuilder)
                 .andDo(MockMvcResultHandlers.print());
     }
-
     @Then("client receives following users")
     public void verifyAllUsers(DataTable dataTable) throws Exception {
         System.out.println("22222");
